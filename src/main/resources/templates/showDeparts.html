@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Phòng ban</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+                            integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
+                            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" 
+                            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" 
+                            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    </head>
+    <style>
+        .hidetext { -webkit-text-security: disc; /* Default */ }
+        .table  {text-align: center;}
+    </style>
+<body>
+    <br>
+    <center><h2><p class="text-danger">DANH SÁCH PHÒNG BAN</p></h2></center>
+    <br>
+    <div class="container">
+        <th:block th:if="${#lists.isEmpty(listDeparts)}">
+            <center><h5><p class="text-danger">No Departs</p></h5></center> 
+        </th:block>
+        <th:block th:unless="${#lists.isEmpty(listDeparts)}"> 
+            <table class="table table-bordered table-hover" id="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        	<th>Departs's ID</th>
+                        <th>Departs's Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="depart,iterStat : ${listDeparts}">
+                        <th scope="row" th:text="${iterStat.count}"></th>
+                        	<td th:text="${depart.ID}"></td>
+                        		<td th:text="${depart.Departs_name}"></td>
+                        			<td> <a class="btn btn-danger btn-sm" th:href="@{'/departs/delete/' + ${depart.ID}}">Del</a></td>
+                    			</tr>
+                    
+                </tbody>
+            </table>
+        </th:block>
+       <span></span>
+        
+       <div class="col-6 no-padding">
+        <form class="form-inline" action="#" th:action="@{/departs/save}"  method="get">
+            <input class="form-control mr-sm-2" type="text" id="id"  name="departsID" placeholder="Depart's ID" readonly="readonly" />
+            <input class="form-control mr-sm-2" type="text" id="name"  name="departsName"  placeholder="Enter depart's name ..." />
+            <button class="btn btn-primary" type="submit">
+                <i class="fa fa-search"></i> Save
+            </button>
+        </form>
+    </div>
+     <script>
+    
+                var table = document.getElementById('table');
+                
+                for(var i = 1; i < table.rows.length; i++)
+                {
+                    table.rows[i].onclick = function()
+                    {
+                         //rIndex = this.rowIndex;
+                         document.getElementById("id").value = this.cells[1].innerHTML;
+                         document.getElementById("name").value = this.cells[2].innerHTML;
+                         
+                    };
+                }
+    
+         </script>
+</div><!--container-->
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Trang chủ</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+                        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
+                        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" 
+                        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" 
+                        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</head>
+<style>
+        
+        .table  {text-align: center;}
+    </style>
+<body>
+	
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Trang chủ</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Trang chủ <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/staff/top10">Top 10</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/user">Danh sách tài khoản</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/departs">Phòng ban</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Phòng ban
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Thêm thành viên</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Thêm mới phòng ban</a>
+              </div>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="type something..." aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+      <br/>
+     <center><h2><p class="text-danger">THÔNG TIN NHÂN VIÊN</p></h2></center>
+      <br/>
+      
+          <div class="container-fluid">
+           	<th:block th:if="${#lists.isEmpty(all_staffs)}">
+                <h5>No contacts</h5>
+            </th:block>
+            <th:block th:unless="${#lists.isEmpty(all_staffs)}">
+                    <table class="table table-bordered  table-hover" >
+                        <thead class="thead-dark">
+                        <tr text-align="center">
+                            <th>#</th>
+                            <th></th>
+                            <th>Staff's ID</th>
+                            <th>Fullname</th>
+                            <th>Gender</th>
+                            <th>Birthday</th>
+                            <th>Email</th>
+                            <th>Level</th>
+                            <th>Salary</th>
+                            <th>Departs</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="staff,iterStat : ${all_staffs}">
+                            <th scope="row" th:text="${iterStat.count}"></th>
+                            <td width="100" >
+                            		<img alt="" th:src="@{'/getimage/'+${staff.Photos}}" width="80" height="70">
+                            </td>
+                            <td th:text="${staff.ID}"></td>
+                            <td th:text="${staff.Fullname}"></td>
+                            <td><span th:text="${staff.Sex}? 'Nam' : 'Nữ'"></span></td>
+                            <td th:text="${staff.Birthday}"></td>
+                            <td th:text="${staff.Email}"></td>
+                            <td th:text="${staff.Levels}"></td>
+                            <td th:text="${staff.Salary}"></td>
+                            <td th:text="${staff.departs.Departs_name}"></td>
+                            <td><a class="btn btn-primary btn-sm"
+                              th:href="@{'/staff/edit/' + ${staff.ID}}">Edit</a> | <a
+                              class="btn btn-danger btn-sm" th:href="@{'/staff/delete/' + ${staff.ID}}">Del</a> | 
+                              <a class="btn btn-warning btn-sm" th:href="@{'/records/' + ${staff.ID}}">Records</a></td>
+                        </tr>
+                        <tr>
+                          <td><a class="btn btn-success btn-sm"
+                              th:href="@{/staff/add}">New staffs</a></td>
+                      </tr>
+                        </tbody>
+                    </table>
+            </th:block>
+            <div class="row mt-4">
+              <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                  <span th:text="${successMessage}"></span>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+          </div>
+        </div><!--container-->
+</body>
+</html>
